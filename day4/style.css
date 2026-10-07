@@ -1,0 +1,143 @@
+/* 1. CSS Variables for Themes */
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #0f172a;
+    --border-color: #cbd5e1;
+    --primary-btn: #2563eb;
+    --primary-btn-hover: #1d4ed8;
+    --clear-btn: #ef4444;
+    --clear-btn-hover: #dc2626;
+}
+
+body.dark {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --border-color: #334155;
+    --primary-btn: #38bdf8;
+    --primary-btn-hover: #0284c7;
+    --clear-btn: #f87171;
+    --clear-btn-hover: #ef4444;
+}
+
+/* 2. Base Styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem 1rem;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+textarea {
+    width: 100%;
+    height: 160px;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-btn);
+}
+
+.counters {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0 1rem 0;
+    font-size: 0.95rem;
+}
+
+.counters p {
+    margin: 0;
+}
+
+/* 3. Character Counter Warning & Over Classes */
+p.warning {
+    color: #f97316;
+    /* Orange */
+    font-weight: 600;
+}
+
+p.over {
+    color: #ef4444;
+    /* Red */
+    font-weight: bold;
+}
+
+/* 4. Buttons */
+button {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#theme-toggle {
+    background-color: var(--primary-btn);
+    color: #ffffff;
+}
+
+#theme-toggle:hover {
+    background-color: var(--primary-btn-hover);
+}
+
+#clear-btn {
+    background-color: var(--clear-btn);
+    color: #ffffff;
+}
+
+#clear-btn:hover {
+    background-color: var(--clear-btn-hover);
+}
