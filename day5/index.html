@@ -10,6 +10,8 @@
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-disabled: #93c5fd;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
@@ -71,19 +73,50 @@
             border-radius: 12px;
             border: 1px solid var(--border);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .search-card label {
             display: block;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             font-size: 0.9rem;
             color: var(--text-muted);
         }
 
+        .controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        #load-users {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+
+        #load-users:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        #load-users:disabled {
+            background-color: var(--primary-disabled);
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
         #filter-input {
-            width: 100%;
+            flex: 1;
+            min-width: 220px;
             padding: 0.75rem 1rem;
             font-size: 1rem;
             border: 1px solid #cbd5e1;
@@ -98,16 +131,12 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
-        #loading-spinner {
+        /* Single status message styling required by reviewer */
+        #status-message {
             font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        #error-message {
-            color: #ef4444;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            min-height: 1.5rem;
+            color: var(--text-muted);
         }
 
         .user-grid {
@@ -145,14 +174,6 @@
             color: var(--text-muted);
             word-break: break-all;
         }
-
-        .no-users {
-            color: var(--text-muted);
-            font-style: italic;
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 2rem 0;
-        }
     </style>
     <script src="users.js" defer></script>
 </head>
@@ -169,12 +190,14 @@
 
         <div class="search-card">
             <label for="filter-input">Search Directory</label>
-            <input type="text" id="filter-input" placeholder="Filter by name, email, or username...">
+            <div class="controls">
+                <button id="load-users">Load Users</button>
+                <input type="text" id="filter-input" placeholder="Filter by name, email, or username...">
+            </div>
         </div>
 
-        <!-- ARIA Live Regions for accessibility -->
-        <div id="loading-spinner" aria-live="polite" style="display: none;">Loading user data...</div>
-        <div id="error-message" role="alert" aria-live="assertive"></div>
+        <!-- Single ARIA Live region status paragraph for loading, success, and error states -->
+        <p id="status-message" aria-live="polite" role="alert"></p>
 
         <ul id="users-list" class="user-grid"></ul>
     </main>

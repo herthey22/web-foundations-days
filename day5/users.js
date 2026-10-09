@@ -2,22 +2,22 @@
 let users = [];
 
 // DOM Elements
+const loadUsersBtn = document.getElementById("load-users");
 const filterInput = document.getElementById("filter-input");
 const usersList = document.getElementById("users-list");
-const loadingSpinner = document.getElementById("loading-spinner");
-const errorMessage = document.getElementById("error-message");
+const statusMessage = document.getElementById("status-message");
 
 // 1. Render Users Array
 function renderUsers(list) {
-    usersList.textContent = ""; // Clear existing list
+    usersList.textContent = ""; // Clear existing cards
 
     if (list.length === 0) {
-        const emptyItem = document.createElement("li");
-        emptyItem.className = "no-users";
-        emptyItem.textContent = "No users match your filter.";
-        usersList.appendChild(emptyItem);
+        statusMessage.textContent = "No users match your filter.";
         return;
     }
+
+    // Clear status text when showing valid results
+    statusMessage.textContent = "";
 
     list.forEach(user => {
         const card = document.createElement("li");
@@ -32,24 +32,31 @@ function renderUsers(list) {
         const email = document.createElement("p");
         email.textContent = `📧 ${user.email}`;
 
+        // Added city requirement from review
+        const city = document.createElement("p");
+        city.textContent = `📍 City: ${user.address ? user.address.city : "N/A"}`;
+
         const company = document.createElement("p");
         company.textContent = `🏢 ${user.company ? user.company.name : "N/A"}`;
 
         card.appendChild(name);
         card.appendChild(username);
         card.appendChild(email);
+        card.appendChild(city);
         card.appendChild(company);
 
         usersList.appendChild(card);
     });
 }
 
-// 2. Fetch Users from API
+// 2. Fetch Users on Button Click
 async function loadUsers() {
     //const url = "https://jsonplaceholder.typicode.com/users-broken"; // Intentionally broken URL for testing error handling
-    const url = "https://jsonplaceholder.typicode.com/users"; // Correct URL
-    loadingSpinner.style.display = "block";
-    errorMessage.textContent = "";
+    const url = "https://jsonplaceholder.typicode.com/users"; // Correct URL for actual data fetching
+    // UI state: disable button & show loading state in single status paragraph
+    loadUsersBtn.disabled = true;
+    statusMessage.textContent = "Loading user data...";
+    usersList.textContent = "";
 
     try {
         const response = await fetch(url);
@@ -62,9 +69,10 @@ async function loadUsers() {
         renderUsers(users);
     } catch (error) {
         console.error("Failed to load users:", error);
-        errorMessage.textContent = "Failed to load user data. Please check your internet connection or try again later.";
+        statusMessage.textContent = "Failed to load user data. Please check your internet connection or try again later.";
     } finally {
-        loadingSpinner.style.display = "none";
+        // Re-enable button regardless of outcome
+        loadUsersBtn.disabled = false;
     }
 }
 
@@ -79,5 +87,5 @@ filterInput.addEventListener("input", () => {
     renderUsers(filteredUsers);
 });
 
-// Load users on script execution
-loadUsers();
+// 4. Attach Click Event Listener (No automatic call on page load)
+loadUsersBtn.addEventListener("click", loadUsers);
