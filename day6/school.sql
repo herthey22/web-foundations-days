@@ -1,3 +1,6 @@
+PRAGMA foreign_keys = ON;
+
+
 -- ----------------------------------------------------
 -- 1. DROP EXISTING TABLES (Clean Slate)
 -- ----------------------------------------------------
@@ -91,3 +94,6 @@ WHERE e.id IS NULL;
 UPDATE enrolments
 SET grade = 'A+'
 WHERE student_id = 1 AND course_id = 1;
+
+CREATE INDEX idx_enrolments_course_id
+ON enrolments(course_id);
